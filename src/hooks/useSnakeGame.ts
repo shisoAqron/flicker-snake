@@ -2,7 +2,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { Direction, GameState } from "../types";
 import {
   ITEM_SPAWN_INTERVAL_MS,
+  ITEM_SPAWN_INTERVAL_VS_MS,
   MAX_ITEMS,
+  MAX_ITEMS_VS,
   getMoveInterval,
   generateInitialItems,
   getNextHead,
@@ -181,22 +183,24 @@ export const useSnakeGame = (mode: "solo" | "vs" = "solo") => {
     return () => clearInterval(interval);
   }, [snakeLength, mode]);
 
-  // アイテム追加タイマー
+  // アイテム追加タイマー（VS モードは上限5・800ms間隔、solo は上限3・2000ms間隔）
+  const maxItems = mode === "vs" ? MAX_ITEMS_VS : MAX_ITEMS;
+  const spawnInterval = mode === "vs" ? ITEM_SPAWN_INTERVAL_VS_MS : ITEM_SPAWN_INTERVAL_MS;
   useEffect(() => {
     const interval = setInterval(() => {
       setState((prev) => {
         if (prev.status !== "playing") return prev;
-        if (prev.items.length >= MAX_ITEMS) return prev;
+        if (prev.items.length >= maxItems) return prev;
 
         const newPos = getRandomEmptyPosition(prev.snake, prev.items);
         if (!newPos) return prev;
 
         return { ...prev, items: [...prev.items, newPos] };
       });
-    }, ITEM_SPAWN_INTERVAL_MS);
+    }, spawnInterval);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [maxItems, spawnInterval]);
 
   // VS モード: 60 秒カウントダウン → 時間切れで長さ比較
   useEffect(() => {
