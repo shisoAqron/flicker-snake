@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import type { Direction } from "../types";
 import { detectSwipeDirection } from "../utils/game";
 
@@ -9,26 +9,30 @@ type UseSwipeOptions = {
 export const useSwipe = ({ onSwipe }: UseSwipeOptions) => {
   const pointerStartRef = useRef<{ x: number; y: number } | null>(null);
 
-  const handlePointerDown = (event: React.PointerEvent) => {
-    pointerStartRef.current = {
-      x: event.clientX,
-      y: event.clientY,
+  useEffect(() => {
+    const handlePointerDown = (event: PointerEvent) => {
+      pointerStartRef.current = { x: event.clientX, y: event.clientY };
     };
-  };
 
-  const handlePointerUp = (event: React.PointerEvent) => {
-    if (!pointerStartRef.current) return;
+    const handlePointerUp = (event: PointerEvent) => {
+      if (!pointerStartRef.current) return;
 
-    const start = pointerStartRef.current;
-    const end = { x: event.clientX, y: event.clientY };
-    const direction = detectSwipeDirection(start, end);
+      const direction = detectSwipeDirection(pointerStartRef.current, {
+        x: event.clientX,
+        y: event.clientY,
+      });
 
-    if (direction) {
-      onSwipe(direction);
-    }
+      if (direction) onSwipe(direction);
 
-    pointerStartRef.current = null;
-  };
+      pointerStartRef.current = null;
+    };
 
-  return { handlePointerDown, handlePointerUp };
+    window.addEventListener("pointerdown", handlePointerDown);
+    window.addEventListener("pointerup", handlePointerUp);
+
+    return () => {
+      window.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("pointerup", handlePointerUp);
+    };
+  }, [onSwipe]);
 };

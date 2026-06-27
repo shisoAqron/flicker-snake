@@ -11,7 +11,7 @@ type Props = {
 };
 
 const GameBoard = ({ state, onSwipe }: Props) => {
-  const { handlePointerDown, handlePointerUp } = useSwipe({ onSwipe });
+  useSwipe({ onSwipe });
 
   const snakeMap = new Map<string, number>();
   state.snake.forEach((seg, i) => snakeMap.set(`${seg.x},${seg.y}`, i));
@@ -46,11 +46,7 @@ const GameBoard = ({ state, onSwipe }: Props) => {
   }
 
   return (
-    <div
-      className="game-board"
-      onPointerDown={handlePointerDown}
-      onPointerUp={handlePointerUp}
-    >
+    <div className="game-board">
       {cells}
     </div>
   );
