@@ -6,11 +6,7 @@ export const ITEM_SPAWN_INTERVAL_MS = 2000;
 export const MAX_ITEMS = 3;
 export const MIN_SWIPE_DISTANCE = 30;
 
-export const initialSnake: Position[] = [
-  { x: 10, y: 10 },
-  { x: 9, y: 10 },
-  { x: 8, y: 10 },
-];
+export const initialSnake: Position[] = [{ x: 10, y: 10 }];
 
 export const isOppositeDirection = (
   current: Direction,
