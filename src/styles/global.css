@@ -106,6 +106,8 @@ body,
   height: 100%;
   padding: 12px 8px 8px;
   gap: 8px;
+  /* 画面全体でフリック入力を受け付けるためブラウザのタッチ処理を無効化 */
+  touch-action: none;
 }
 
 .game-header {

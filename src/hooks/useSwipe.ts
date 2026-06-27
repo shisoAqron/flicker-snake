@@ -27,12 +27,19 @@ export const useSwipe = ({ onSwipe }: UseSwipeOptions) => {
       pointerStartRef.current = null;
     };
 
+    const handlePointerCancel = () => {
+      // ブラウザがジェスチャーを横取りした場合はスタート座標をリセット
+      pointerStartRef.current = null;
+    };
+
     window.addEventListener("pointerdown", handlePointerDown);
     window.addEventListener("pointerup", handlePointerUp);
+    window.addEventListener("pointercancel", handlePointerCancel);
 
     return () => {
       window.removeEventListener("pointerdown", handlePointerDown);
       window.removeEventListener("pointerup", handlePointerUp);
+      window.removeEventListener("pointercancel", handlePointerCancel);
     };
   }, [onSwipe]);
 };
