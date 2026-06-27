@@ -151,32 +151,31 @@ body,
   inset: 1px;
   background: linear-gradient(135deg, #3ddc84, #00c853);
   border-radius: 30%;
-  animation: snakePulse 900ms infinite ease-in-out;
+  animation: snakePulse 700ms infinite ease-in-out;
 }
 
 .snake-head {
-  background: linear-gradient(135deg, #a8ff78, #78ff44);
+  background: linear-gradient(135deg, #ccff90, #69f0ae);
   border-radius: 40%;
-  transform: scale(1.08);
-  box-shadow: 0 0 8px #78ff4488;
+  box-shadow: 0 0 10px #69f0ae99;
   z-index: 1;
 }
 
 @keyframes snakePulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.15); }
-  100% { transform: scale(1); }
+  0%   { transform: scale(0.75); opacity: 0.75; }
+  50%  { transform: scale(1.1);  opacity: 1; }
+  100% { transform: scale(0.75); opacity: 0.75; }
 }
 
 /* head にも scale override */
 .snake-head {
-  animation: snakePulseHead 900ms infinite ease-in-out;
+  animation: snakePulseHead 700ms infinite ease-in-out;
 }
 
 @keyframes snakePulseHead {
-  0% { transform: scale(1.08); }
-  50% { transform: scale(1.22); }
-  100% { transform: scale(1.08); }
+  0%   { transform: scale(0.85); box-shadow: 0 0 6px #69f0ae55; }
+  50%  { transform: scale(1.25); box-shadow: 0 0 18px #69f0aecc, 0 0 32px #00e67644; }
+  100% { transform: scale(0.85); box-shadow: 0 0 6px #69f0ae55; }
 }
 
 /* ===== 成長アイテム ===== */

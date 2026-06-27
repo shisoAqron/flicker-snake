@@ -3,7 +3,7 @@ import type { Direction, GameState } from "../types";
 import {
   ITEM_SPAWN_INTERVAL_MS,
   MAX_ITEMS,
-  MOVE_INTERVAL_MS,
+  getMoveInterval,
   generateInitialItems,
   getNextHead,
   getRandomEmptyPosition,
@@ -59,7 +59,8 @@ export const useSnakeGame = () => {
     setState(createInitialState());
   }, []);
 
-  // 移動タイマー
+  // 移動タイマー（スネーク長に応じて速度変化）
+  const snakeLength = state.snake.length;
   useEffect(() => {
     const interval = setInterval(() => {
       setState((prev) => {
@@ -100,10 +101,10 @@ export const useSnakeGame = () => {
           score: ateItem ? prev.score + 1 : prev.score,
         };
       });
-    }, MOVE_INTERVAL_MS);
+    }, getMoveInterval(snakeLength));
 
     return () => clearInterval(interval);
-  }, []);
+  }, [snakeLength]);
 
   // アイテム追加タイマー
   useEffect(() => {

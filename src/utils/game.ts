@@ -2,7 +2,15 @@ import type { Direction, Position } from "../types";
 import { BOARD_SIZE, positionEquals } from "./position";
 
 export const MOVE_INTERVAL_MS = 150;
+export const MOVE_INTERVAL_MIN_MS = 10;
 export const ITEM_SPAWN_INTERVAL_MS = 2000;
+
+/**
+ * スネークの長さに応じた移動間隔(ms)を返す
+ * 長さ 1-9: 150ms, 10-19: 130ms, 20-29: 110ms ... 70+: 10ms(下限)
+ */
+export const getMoveInterval = (snakeLength: number): number =>
+  Math.max(MOVE_INTERVAL_MIN_MS, MOVE_INTERVAL_MS - Math.floor(snakeLength / 10) * 20);
 export const MAX_ITEMS = 3;
 export const MIN_SWIPE_DISTANCE = 30;
 
