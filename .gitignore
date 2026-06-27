@@ -1,0 +1,24 @@
+# 依存パッケージ
+node_modules/
+
+# ビルド成果物
+dist/
+
+# ローカル環境変数
+.env
+.env.local
+.env.*.local
+
+# エディタ設定
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# ログ
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

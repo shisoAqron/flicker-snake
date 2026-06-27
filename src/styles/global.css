@@ -1,0 +1,266 @@
+/* ===== リセット・ベース ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  /* 下スワイプでのリロード（pull-to-refresh）を防ぐ */
+  overscroll-behavior: none;
+  background: #0f1117;
+  color: #e8eaf0;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+  /* Safari ダブルタップズームを防ぐ */
+  touch-action: manipulation;
+}
+
+/* ===== トップページ ===== */
+.home-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 24px;
+}
+
+.home-title {
+  font-size: clamp(2rem, 8vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #7fff7f;
+  text-shadow: 0 0 24px #00ff6655;
+}
+
+.home-subtitle {
+  font-size: 1rem;
+  color: #8892a4;
+  letter-spacing: 0.08em;
+}
+
+.start-button {
+  margin-top: 16px;
+  padding: 16px 48px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #0f1117;
+  background: linear-gradient(135deg, #7fff7f, #00e676);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 32px #00ff6640;
+  transition: transform 0.1s, box-shadow 0.1s;
+  /* ボタンのダブルタップズームを防ぐ */
+  touch-action: manipulation;
+}
+
+.start-button:active {
+  transform: scale(0.96);
+  box-shadow: 0 0 16px #00ff6620;
+}
+
+/* ===== ゲームページ ===== */
+.game-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  padding: 12px 8px 8px;
+  gap: 8px;
+}
+
+.game-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.score-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: #8892a4;
+  font-weight: 600;
+}
+
+.score-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #7fff7f;
+  text-shadow: 0 0 12px #00ff6655;
+  min-width: 2.5ch;
+  text-align: right;
+}
+
+.game-hint {
+  font-size: 0.85rem;
+  color: #8892a4;
+  letter-spacing: 0.05em;
+  animation: fadeInOut 1.5s ease-in-out infinite;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* ===== ゲームボードラッパー ===== */
+.game-board-wrapper {
+  position: relative;
+  line-height: 0;
+}
+
+/* ===== ゲームボード ===== */
+.game-board {
+  display: grid;
+  grid-template-columns: repeat(20, 1fr);
+  grid-template-rows: repeat(20, 1fr);
+  width: min(92vw, 520px);
+  aspect-ratio: 1 / 1;
+  /* スクロール・ズーム・pull-to-refresh を完全に無効化 */
+  touch-action: none;
+  background: #161b27;
+  border: 2px solid #2a3044;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* ===== セル ===== */
+.cell {
+  position: relative;
+  border: 0.5px solid #1e2535;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== スネークセグメント ===== */
+.snake-segment {
+  position: absolute;
+  inset: 1px;
+  background: linear-gradient(135deg, #3ddc84, #00c853);
+  border-radius: 30%;
+  animation: snakePulse 900ms infinite ease-in-out;
+}
+
+.snake-head {
+  background: linear-gradient(135deg, #a8ff78, #78ff44);
+  border-radius: 40%;
+  transform: scale(1.08);
+  box-shadow: 0 0 8px #78ff4488;
+  z-index: 1;
+}
+
+@keyframes snakePulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+/* head にも scale override */
+.snake-head {
+  animation: snakePulseHead 900ms infinite ease-in-out;
+}
+
+@keyframes snakePulseHead {
+  0% { transform: scale(1.08); }
+  50% { transform: scale(1.22); }
+  100% { transform: scale(1.08); }
+}
+
+/* ===== 成長アイテム ===== */
+.growth-item {
+  position: absolute;
+  inset: 2px;
+  background: radial-gradient(circle at 35% 35%, #ffe082, #ff6f00);
+  border-radius: 50%;
+  animation: itemFloat 1.4s ease-in-out infinite, itemGlow 1.4s ease-in-out infinite;
+  box-shadow: 0 0 8px #ff9800aa;
+}
+
+@keyframes itemFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-2px) scale(1.1); }
+}
+
+@keyframes itemGlow {
+  0%, 100% { box-shadow: 0 0 6px #ff980088; }
+  50% { box-shadow: 0 0 14px #ff9800cc, 0 0 24px #ffcc0044; }
+}
+
+/* ===== ゲームオーバーオーバーレイ ===== */
+.game-over-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: rgba(10, 12, 20, 0.82);
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
+}
+
+.game-over-title {
+  font-size: clamp(1.8rem, 6vw, 2.8rem);
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  color: #ff5252;
+  text-shadow: 0 0 24px #ff525288;
+}
+
+.game-over-score {
+  font-size: 1.1rem;
+  color: #cfd8e3;
+  letter-spacing: 0.08em;
+}
+
+.retry-button {
+  padding: 12px 36px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #0f1117;
+  background: linear-gradient(135deg, #7fff7f, #00e676);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 20px #00ff6640;
+  transition: transform 0.1s;
+  touch-action: manipulation;
+}
+
+.retry-button:active {
+  transform: scale(0.96);
+}
+
+.home-button {
+  padding: 10px 28px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #8892a4;
+  background: transparent;
+  border: 1.5px solid #2a3044;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+  touch-action: manipulation;
+}
+
+.home-button:hover {
+  border-color: #7fff7f55;
+  color: #cfd8e3;
+}
