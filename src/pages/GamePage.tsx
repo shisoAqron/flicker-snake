@@ -1,11 +1,13 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import GameBoard from "../components/GameBoard";
 import { useSnakeGame } from "../hooks/useSnakeGame";
 
 const GamePage = () => {
   const navigate = useNavigate();
-  const { state, setDirection, retry } = useSnakeGame();
+  const [searchParams] = useSearchParams();
+  const mode = searchParams.get("mode") === "vs" ? "vs" : "solo";
+  const { state, setDirection, retry } = useSnakeGame(mode);
 
   // PCキーボード操作
   useEffect(() => {
@@ -36,14 +38,23 @@ const GamePage = () => {
   return (
     <div className="game-page">
       <div className="game-header">
-        <div className="score-block">
-          <span className="score-label">YOU</span>
-          <span className="score-value">{state.score}</span>
-        </div>
-        <div className="score-block score-block--npc">
-          <span className="score-label">NPC</span>
-          <span className="score-value score-value--npc">{state.npcScore}</span>
-        </div>
+        {mode === "vs" ? (
+          <>
+            <div className="score-block">
+              <span className="score-label">YOU</span>
+              <span className="score-value">{state.score}</span>
+            </div>
+            <div className="score-block score-block--npc">
+              <span className="score-label">NPC</span>
+              <span className="score-value score-value--npc">{state.npcScore}</span>
+            </div>
+          </>
+        ) : (
+          <div className="score-block">
+            <span className="score-label">SCORE</span>
+            <span className="score-value">{state.score}</span>
+          </div>
+        )}
       </div>
 
       {state.status === "ready" && (

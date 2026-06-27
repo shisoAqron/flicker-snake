@@ -48,8 +48,15 @@ body,
   letter-spacing: 0.08em;
 }
 
-.start-button {
+.home-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
   margin-top: 16px;
+}
+
+.start-button {
   padding: 16px 48px;
   font-size: 1.4rem;
   font-weight: 700;
@@ -68,6 +75,26 @@ body,
 .start-button:active {
   transform: scale(0.96);
   box-shadow: 0 0 16px #00ff6620;
+}
+
+.vs-button {
+  padding: 14px 40px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #ff7043;
+  background: transparent;
+  border: 2px solid #ff7043;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 20px #ff704330;
+  transition: transform 0.1s, background 0.15s, color 0.15s;
+  touch-action: manipulation;
+}
+
+.vs-button:active {
+  transform: scale(0.96);
+  background: #ff704318;
 }
 
 /* ===== ゲームページ ===== */

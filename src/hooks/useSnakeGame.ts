@@ -15,9 +15,9 @@ import {
 } from "../utils/game";
 import { containsPosition, isOutOfBounds } from "../utils/position";
 
-const createInitialState = (): GameState => {
+const createInitialState = (mode: "solo" | "vs"): GameState => {
   const snake = [...initialSnake];
-  const npcSnake = [...initialNPCSnake];
+  const npcSnake = mode === "vs" ? [...initialNPCSnake] : [];
   return {
     snake,
     direction: null,
@@ -31,8 +31,8 @@ const createInitialState = (): GameState => {
   };
 };
 
-export const useSnakeGame = () => {
-  const [state, setState] = useState<GameState>(createInitialState);
+export const useSnakeGame = (mode: "solo" | "vs" = "solo") => {
+  const [state, setState] = useState<GameState>(() => createInitialState(mode));
 
   const stateRef = useRef<GameState>(state);
   stateRef.current = state;
@@ -65,8 +65,8 @@ export const useSnakeGame = () => {
   }, []);
 
   const retry = useCallback(() => {
-    setState(createInitialState());
-  }, []);
+    setState(createInitialState(mode));
+  }, [mode]);
 
   // 移動タイマー（スネーク長に応じて速度変化）
   const snakeLength = state.snake.length;
@@ -85,13 +85,13 @@ export const useSnakeGame = () => {
           return { ...prev, status: "gameOver", direction: currentDir };
         }
 
-        // プレイヤーが NPC ボディに衝突
-        if (containsPosition(prev.npcSnake.slice(0, -1), nextHead)) {
+        // プレイヤーが NPC ボディに衝突（VS モードのみ）
+        if (mode === "vs" && containsPosition(prev.npcSnake.slice(0, -1), nextHead)) {
           return { ...prev, status: "gameOver", direction: currentDir };
         }
 
-        // プレイヤーが NPC 頭に衝突
-        if (prev.npcSnake.length > 0 && prev.npcSnake[0].x === nextHead.x && prev.npcSnake[0].y === nextHead.y) {
+        // プレイヤーが NPC 頭に衝突（VS モードのみ）
+        if (mode === "vs" && prev.npcSnake.length > 0 && prev.npcSnake[0].x === nextHead.x && prev.npcSnake[0].y === nextHead.y) {
           return { ...prev, status: "gameOver", direction: currentDir };
         }
 
@@ -111,6 +111,18 @@ export const useSnakeGame = () => {
           : prev.items;
 
         const newScore = playerAteItem ? prev.score + 1 : prev.score;
+
+        // ===== NPC 移動（VS モードのみ）=====
+        if (mode !== "vs") {
+          return {
+            ...prev,
+            snake: newPlayerSnake,
+            direction: currentDir,
+            nextDirection: currentDir,
+            items: newItems,
+            score: newScore,
+          };
+        }
 
         // ===== NPC 移動 =====
         const npcDir = getNPCNextDirection(
@@ -165,7 +177,7 @@ export const useSnakeGame = () => {
     }, getMoveInterval(snakeLength));
 
     return () => clearInterval(interval);
-  }, [snakeLength]);
+  }, [snakeLength, mode]);
 
   // アイテム追加タイマー
   useEffect(() => {
