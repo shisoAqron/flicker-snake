@@ -83,12 +83,19 @@ body,
 
 .game-header {
   display: flex;
-  align-items: baseline;
-  gap: 10px;
+  align-items: center;
+  gap: 24px;
+}
+
+.score-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
 }
 
 .score-label {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   letter-spacing: 0.2em;
   color: #8892a4;
   font-weight: 600;
@@ -100,7 +107,12 @@ body,
   color: #7fff7f;
   text-shadow: 0 0 12px #00ff6655;
   min-width: 2.5ch;
-  text-align: right;
+  text-align: center;
+}
+
+.score-value--npc {
+  color: #ff7043;
+  text-shadow: 0 0 12px #ff704355;
 }
 
 .game-hint {
@@ -176,6 +188,35 @@ body,
   0%   { transform: scale(0.85); box-shadow: 0 0 6px #69f0ae55; }
   50%  { transform: scale(1.25); box-shadow: 0 0 18px #69f0aecc, 0 0 32px #00e67644; }
   100% { transform: scale(0.85); box-shadow: 0 0 6px #69f0ae55; }
+}
+
+/* ===== NPC スネークセグメント ===== */
+.npc-segment {
+  position: absolute;
+  inset: 1px;
+  background: linear-gradient(135deg, #ff7043, #e64a19);
+  border-radius: 30%;
+  animation: npcPulse 700ms infinite ease-in-out;
+}
+
+.npc-head {
+  background: linear-gradient(135deg, #ff8a65, #ff5722);
+  border-radius: 40%;
+  box-shadow: 0 0 10px #ff572299;
+  z-index: 1;
+  animation: npcPulseHead 700ms infinite ease-in-out;
+}
+
+@keyframes npcPulse {
+  0%   { transform: scale(0.75); opacity: 0.75; }
+  50%  { transform: scale(1.1);  opacity: 1; }
+  100% { transform: scale(0.75); opacity: 0.75; }
+}
+
+@keyframes npcPulseHead {
+  0%   { transform: scale(0.85); box-shadow: 0 0 6px #ff572255; }
+  50%  { transform: scale(1.25); box-shadow: 0 0 18px #ff5722cc, 0 0 32px #ff572244; }
+  100% { transform: scale(0.85); box-shadow: 0 0 6px #ff572255; }
 }
 
 /* ===== 成長アイテム ===== */

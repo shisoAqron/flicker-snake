@@ -11,7 +11,10 @@ export type GameState = {
   snake: Position[];
   direction: Direction | null;
   nextDirection: Direction | null;
+  npcSnake: Position[];
+  npcDirection: Direction | null;
   items: Position[];
   score: number;
+  npcScore: number;
   status: GameStatus;
 };

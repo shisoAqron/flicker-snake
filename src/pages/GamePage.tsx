@@ -36,8 +36,14 @@ const GamePage = () => {
   return (
     <div className="game-page">
       <div className="game-header">
-        <span className="score-label">SCORE</span>
-        <span className="score-value">{state.score}</span>
+        <div className="score-block">
+          <span className="score-label">YOU</span>
+          <span className="score-value">{state.score}</span>
+        </div>
+        <div className="score-block score-block--npc">
+          <span className="score-label">NPC</span>
+          <span className="score-value score-value--npc">{state.npcScore}</span>
+        </div>
       </div>
 
       {state.status === "ready" && (
