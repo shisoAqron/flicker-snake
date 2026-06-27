@@ -27,6 +27,8 @@ const createInitialState = (mode: "solo" | "vs"): GameState => {
     items: generateInitialItems([...snake, ...npcSnake]),
     score: 0,
     npcScore: 0,
+    timeLeft: mode === "vs" ? 60 : 0,
+    result: null,
     status: "ready",
   };
 };
@@ -82,24 +84,24 @@ export const useSnakeGame = (mode: "solo" | "vs" = "solo") => {
 
         // 壁衝突
         if (isOutOfBounds(nextHead)) {
-          return { ...prev, status: "gameOver", direction: currentDir };
+          return { ...prev, status: "gameOver", direction: currentDir, result: mode === "vs" ? "npc" : null };
         }
 
         // プレイヤーが NPC ボディに衝突（VS モードのみ）
         if (mode === "vs" && containsPosition(prev.npcSnake.slice(0, -1), nextHead)) {
-          return { ...prev, status: "gameOver", direction: currentDir };
+          return { ...prev, status: "gameOver", direction: currentDir, result: "npc" };
         }
 
         // プレイヤーが NPC 頭に衝突（VS モードのみ）
         if (mode === "vs" && prev.npcSnake.length > 0 && prev.npcSnake[0].x === nextHead.x && prev.npcSnake[0].y === nextHead.y) {
-          return { ...prev, status: "gameOver", direction: currentDir };
+          return { ...prev, status: "gameOver", direction: currentDir, result: "npc" };
         }
 
         const playerAteItem = containsPosition(prev.items, nextHead);
 
         // 自己衝突
         if (isSelfCollision(nextHead, prev.snake, playerAteItem)) {
-          return { ...prev, status: "gameOver", direction: currentDir };
+          return { ...prev, status: "gameOver", direction: currentDir, result: mode === "vs" ? "npc" : null };
         }
 
         const newPlayerSnake = playerAteItem
@@ -195,6 +197,30 @@ export const useSnakeGame = (mode: "solo" | "vs" = "solo") => {
 
     return () => clearInterval(interval);
   }, []);
+
+  // VS モード: 60 秒カウントダウン → 時間切れで長さ比較
+  useEffect(() => {
+    if (mode !== "vs") return;
+
+    const interval = setInterval(() => {
+      setState((prev) => {
+        if (prev.status !== "playing") return prev;
+
+        const next = prev.timeLeft - 1;
+
+        if (next <= 0) {
+          const pLen = prev.snake.length;
+          const nLen = prev.npcSnake.length;
+          const result = pLen > nLen ? "player" : pLen < nLen ? "npc" : "draw";
+          return { ...prev, status: "gameOver", timeLeft: 0, result };
+        }
+
+        return { ...prev, timeLeft: next };
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [mode]);
 
   return { state, setDirection, retry };
 };

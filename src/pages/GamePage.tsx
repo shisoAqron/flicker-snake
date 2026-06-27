@@ -44,6 +44,10 @@ const GamePage = () => {
               <span className="score-label">YOU</span>
               <span className="score-value">{state.score}</span>
             </div>
+            <div className={`timer-block ${state.timeLeft <= 10 && state.status === "playing" ? "timer-block--urgent" : ""}`}>
+              <span className="timer-value">{state.timeLeft}</span>
+              <span className="timer-label">SEC</span>
+            </div>
             <div className="score-block score-block--npc">
               <span className="score-label">NPC</span>
               <span className="score-value score-value--npc">{state.npcScore}</span>
@@ -66,8 +70,21 @@ const GamePage = () => {
 
         {state.status === "gameOver" && (
           <div className="game-over-overlay">
-            <h2 className="game-over-title">GAME OVER</h2>
-            <p className="game-over-score">Score: {state.score}</p>
+            {mode === "vs" && state.result ? (
+              <>
+                <h2 className={`game-over-title ${state.result === "player" ? "result--win" : state.result === "npc" ? "result--lose" : "result--draw"}`}>
+                  {state.result === "player" ? "YOU WIN!" : state.result === "npc" ? "YOU LOSE" : "DRAW"}
+                </h2>
+                <p className="game-over-score">
+                  You {state.snake.length} vs NPC {state.npcSnake.length}
+                </p>
+              </>
+            ) : (
+              <>
+                <h2 className="game-over-title">GAME OVER</h2>
+                <p className="game-over-score">Score: {state.score}</p>
+              </>
+            )}
             <button className="retry-button" onClick={retry}>
               RETRY
             </button>
