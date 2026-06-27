@@ -56,10 +56,10 @@ export const getRandomEmptyPosition = (
   return empty[Math.floor(Math.random() * empty.length)];
 };
 
-export const generateInitialItems = (snake: Position[]): Position[] => {
-  const count = Math.floor(Math.random() * 3) + 1; // 1〜3個
+export const generateInitialItems = (snake: Position[], count?: number): Position[] => {
+  const n = count ?? Math.floor(Math.random() * 3) + 1; // 指定なしは1〜3個
   const items: Position[] = [];
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i < n; i++) {
     const pos = getRandomEmptyPosition(snake, items);
     if (pos) items.push(pos);
   }

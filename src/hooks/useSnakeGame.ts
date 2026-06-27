@@ -26,7 +26,7 @@ const createInitialState = (mode: "solo" | "vs"): GameState => {
     nextDirection: null,
     npcSnake,
     npcDirection: null,
-    items: generateInitialItems([...snake, ...npcSnake]),
+    items: generateInitialItems([...snake, ...npcSnake], mode === "vs" ? 3 : undefined),
     score: 0,
     npcScore: 0,
     timeLeft: mode === "vs" ? 60 : 0,
@@ -146,13 +146,19 @@ export const useSnakeGame = (mode: "solo" | "vs" = "solo") => {
         const npcHitPlayer = containsPosition(newPlayerSnake.slice(0, -1), npcNextHead);
 
         if (npcHitWall || npcHitSelf || npcHitPlayer) {
-          // NPC が死亡 → ランダム位置に長さ1でリスポーン
-          const respawn = getRandomEmptyPosition(
-            [...newPlayerSnake, ...prev.npcSnake],
-            newItems,
-          );
-          newNpcSnake = respawn ? [respawn] : [prev.npcSnake[0]];
-          newNpcDirection = null;
+          // VS モード: NPC 死亡 → プレイヤーの勝利
+          return {
+            ...prev,
+            snake: newPlayerSnake,
+            direction: currentDir,
+            nextDirection: currentDir,
+            npcSnake: prev.npcSnake,
+            items: newItems,
+            score: newScore,
+            npcScore: prev.npcScore,
+            status: "gameOver",
+            result: "player",
+          };
         } else {
           const npcAteItem = containsPosition(newItems, npcNextHead);
           newNpcSnake = npcAteItem
