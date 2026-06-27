@@ -143,7 +143,7 @@ export const useSnakeGame = (mode: "solo" | "vs" = "solo") => {
 
         const npcHitWall = isOutOfBounds(npcNextHead);
         const npcHitSelf = isSelfCollision(npcNextHead, prev.npcSnake, false);
-        const npcHitPlayer = containsPosition(newPlayerSnake.slice(0, -1), npcNextHead);
+        const npcHitPlayer = containsPosition(newPlayerSnake, npcNextHead);
 
         if (npcHitWall || npcHitSelf || npcHitPlayer) {
           // VS モード: NPC 死亡 → プレイヤーの勝利
