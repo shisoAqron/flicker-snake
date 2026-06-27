@@ -237,9 +237,9 @@ body,
 }
 
 @keyframes snakePulse {
-  0%   { transform: scale(0.75); opacity: 0.75; }
-  50%  { transform: scale(1.1);  opacity: 1; }
-  100% { transform: scale(0.75); opacity: 0.75; }
+  0%   { transform: scale(1.15); opacity: 1; }
+  50%  { transform: scale(0.8);  opacity: 0.75; }
+  100% { transform: scale(1.15); opacity: 1; }
 }
 
 /* head にも scale override */
@@ -248,9 +248,9 @@ body,
 }
 
 @keyframes snakePulseHead {
-  0%   { transform: scale(0.85); box-shadow: 0 0 6px #69f0ae55; }
-  50%  { transform: scale(1.25); box-shadow: 0 0 18px #69f0aecc, 0 0 32px #00e67644; }
-  100% { transform: scale(0.85); box-shadow: 0 0 6px #69f0ae55; }
+  0%   { transform: scale(1.28); box-shadow: 0 0 18px #69f0aecc, 0 0 32px #00e67644; }
+  50%  { transform: scale(0.9);  box-shadow: 0 0 6px #69f0ae55; }
+  100% { transform: scale(1.28); box-shadow: 0 0 18px #69f0aecc, 0 0 32px #00e67644; }
 }
 
 /* ===== NPC スネークセグメント ===== */
@@ -271,15 +271,15 @@ body,
 }
 
 @keyframes npcPulse {
-  0%   { transform: scale(0.75); opacity: 0.75; }
-  50%  { transform: scale(1.1);  opacity: 1; }
-  100% { transform: scale(0.75); opacity: 0.75; }
+  0%   { transform: scale(1.15); opacity: 1; }
+  50%  { transform: scale(0.8);  opacity: 0.75; }
+  100% { transform: scale(1.15); opacity: 1; }
 }
 
 @keyframes npcPulseHead {
-  0%   { transform: scale(0.85); box-shadow: 0 0 6px #ff572255; }
-  50%  { transform: scale(1.25); box-shadow: 0 0 18px #ff5722cc, 0 0 32px #ff572244; }
-  100% { transform: scale(0.85); box-shadow: 0 0 6px #ff572255; }
+  0%   { transform: scale(1.28); box-shadow: 0 0 18px #ff5722cc, 0 0 32px #ff572244; }
+  50%  { transform: scale(0.9);  box-shadow: 0 0 6px #ff572255; }
+  100% { transform: scale(1.28); box-shadow: 0 0 18px #ff5722cc, 0 0 32px #ff572244; }
 }
 
 /* ===== 成長アイテム ===== */
